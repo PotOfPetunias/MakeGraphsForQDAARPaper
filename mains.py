@@ -489,7 +489,11 @@ def autoSaveAll():
 
 #autoSaveAll()
 #reMakeLungCacer()
-showF17()#make=True) # 
+#showF17()#make=True) #
+
+test = classRunObj.ExperamentalRun("")
+
+test.parseFileName("T1066A13F4QS431.txt")
 #makeF10()
 #showF6a(save=True)
 

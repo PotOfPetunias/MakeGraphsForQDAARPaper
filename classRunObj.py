@@ -2,6 +2,7 @@
 # create the run objects
 
 import datetime
+import re
 
 class ExperamentalRun:
     cutOffTime = 10800000000000
@@ -33,23 +34,25 @@ class ExperamentalRun:
         self.fixCutOffTimes()
         
     def parseLog(self, logString):
-        #Date,Time,Transactions,Attributes,Flexable,query,isTrans,qSup,minsup,
-        #setsGen,avgTtime,avgNtime,avgStime,
-        #T_times,,,,,N_times,,,,,S_times,,,,,FP_times,,,,,
-        #T_Mem,(megabytes),,,,N_Mem,,,,,S_Mem,,,,,FP_Mem
+        #  0    1      2       3         4      5       6        7       8
+        #Date,Time,File Name,T Skip,T TooLong,N Skip,N TooLong,F Skip,F TooLong,
+        #   9        10     11       12         13      14       15       16
+        #S Skip,S TooLong,Query,Query Support,Minsup,RulesGen,T AvgTime,N AvgTime,
+        #   17         18      19     20    21         25    26      27
+        #F AvgTime,S AvgTime,TTime0,TTime1,TTime2,,,,NTime0,NTime1,NTime2,,,,
+        #  31     32     33        37     38     39        43
+        #FTime0,FTime1,FTime2,,,,STime0,STime1,STime2,,,,TMemLog0,TMemLog1,TMemLog2,,,,
+        #NMemLog0,NMemLog1,NMemLog2,,,,FMemLog0,FMemLog1,FMemLog2,,,,
+        #SMemLog0,SMemLog1,SMemLog2,,,,
         dataPoints = logString.split(",")
-        if '-' in dataPoints[1]:
-            timep = dataPoints[1]
-            timep = timep[:timep.index('-')]
-            self.date = datetime.datetime.strptime(dataPoints[0]+","+timep, "%m/%d/%Y, %H:%M:%S")
-        else:
-            self.date = datetime.datetime.strptime(dataPoints[0]+","+dataPoints[1], "%m/%d/%Y, %H:%M:%S.%f")
-        self.transactions = int(dataPoints[2])
-        self.attributes = int(dataPoints[3])
-        self.flexable = int(dataPoints[4])
+        self.date = datetime.datetime.strptime(dataPoints[0]+","+dataPoints[1], "%m-%d-%Y, %H:%M:%S.%f")
+        self.parseFileName(dataPoints[2])
+##        self.transactions = int(dataPoints[2])
+##        self.attributes = int(dataPoints[3])
+##        self.flexable = int(dataPoints[4])
         self.query = dataPoints[5]
         self.isTrans = dataPoints[6] == 'TRUE'
-        self.qSup = int(dataPoints[7])
+##        self.qSup = int(dataPoints[7])
         self.minsup = int(dataPoints[8])
         self.setsGen = int(dataPoints[9])
         if self.flexable != -1:
@@ -127,6 +130,13 @@ class ExperamentalRun:
                 if tempNum > maxNum:
                     maxNum = tempNum
         return maxNum
+    
+    def parseFileName(self, fileName):
+        dataPoints = re.split("T|A|F|QS|\.", fileName)
+        self.transactions = int(dataPoints[1])# trans
+        self.attributes = int(dataPoints[2])# Att
+        self.flexable = int(dataPoints[3])# Flex
+        self.qSup = int(dataPoints[4])# Query Sup
         
     def fixCutOffTimes(self):
         if self.avgTtime > self.cutOffTime:
@@ -247,6 +257,7 @@ def parseFile(path, header=True):
         runObjList.append(ExperamentalRun(lines[i]))
 
     return runObjList
+
 
 
 
