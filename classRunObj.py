@@ -40,54 +40,56 @@ class ExperamentalRun:
         #S Skip,S TooLong,Query,Query Support,Minsup,RulesGen,T AvgTime,N AvgTime,
         #   17         18      19     20    21         25    26      27
         #F AvgTime,S AvgTime,TTime0,TTime1,TTime2,,,,NTime0,NTime1,NTime2,,,,
-        #  31     32     33        37     38     39        43
+        #  31     32     33        37     38     39        43        44       45
         #FTime0,FTime1,FTime2,,,,STime0,STime1,STime2,,,,TMemLog0,TMemLog1,TMemLog2,,,,
+	#   49	    50       51           55       56       57
         #NMemLog0,NMemLog1,NMemLog2,,,,FMemLog0,FMemLog1,FMemLog2,,,,
+	#   61       62       63      67
         #SMemLog0,SMemLog1,SMemLog2,,,,
         dataPoints = logString.split(",")
-        self.date = datetime.datetime.strptime(dataPoints[0]+","+dataPoints[1], "%m-%d-%Y, %H:%M:%S.%f")
+        self.date = datetime.datetime.strptime(dataPoints[0]+","+dataPoints[1], "%Y-%m-%d, %H:%M:%S.%f")
         self.parseFileName(dataPoints[2])
 ##        self.transactions = int(dataPoints[2])
 ##        self.attributes = int(dataPoints[3])
 ##        self.flexable = int(dataPoints[4])
-        self.query = dataPoints[5]
-        self.isTrans = dataPoints[6] == 'TRUE'
+        self.query = dataPoints[11]
+        self.isTrans = "=>" in dataPoints[11]
 ##        self.qSup = int(dataPoints[7])
-        self.minsup = int(dataPoints[8])
-        self.setsGen = int(dataPoints[9])
+        self.minsup = int(dataPoints[13])
+        self.setsGen = int(dataPoints[14])
         if self.flexable != -1:
             self.flexPrecentage = round((self.flexable/self.attributes)*4)/4
         else:
             self.flexPrecentage = -1
         
         try:
-            self.avgTtime = int(dataPoints[10])
+            self.avgTtime = int(dataPoints[15])
         except ValueError:
             try:
-                self.avgTtime = perseEpoNotation(dataPoints[10])
+                self.avgTtime = perseEpoNotation(dataPoints[15])
             except ValueError:
-                self.avgTtime = float(dataPoints[10])
+                self.avgTtime = float(dataPoints[15])
         try:
-            self.avgNtime = int(dataPoints[11])
+            self.avgNtime = int(dataPoints[16])
         except ValueError:
             try:
-                self.avgNtime = perseEpoNotation(dataPoints[11])
+                self.avgNtime = perseEpoNotation(dataPoints[16])
             except ValueError:
-                self.avgNtime = float(dataPoints[11])
+                self.avgNtime = float(dataPoints[16])
         try:
-            self.avgStime = int(dataPoints[12])
+            self.avgStime = int(dataPoints[17])
         except ValueError:
             try:
-                self.avgStime = perseEpoNotation(dataPoints[12])
+                self.avgStime = perseEpoNotation(dataPoints[17])
             except ValueError:
-                self.avgStime = float(dataPoints[12])
+                self.avgStime = float(dataPoints[17])
             
-        self.t_times = dataPoints[13:18]
-        self.n_times = dataPoints[18:23]
-        self.s_times = dataPoints[23:28]
-        self.t_Mem = dataPoints[28:33]
-        self.n_Mem = dataPoints[33:38]
-        self.s_Mem = dataPoints[38:43]
+        self.t_times = dataPoints[19:25]
+        self.n_times = dataPoints[25:31]
+        self.s_times = dataPoints[31:37]
+        self.t_Mem = dataPoints[42:49]
+        self.n_Mem = dataPoints[49:55]
+        self.s_Mem = dataPoints[55:61]
         
     def getListOfAvgTimes(self):
         return [self.avgTtime,self.avgNtime,self.avgStime]

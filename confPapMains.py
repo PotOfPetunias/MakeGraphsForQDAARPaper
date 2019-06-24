@@ -43,29 +43,29 @@ def getStanderdAvg(runObjList,dim):
     reduceAndAvg.sortRunObjList(transRunObjList, dim)
     return transRunObjList
 
-def avgAll(runObjList, showAARPP=True):
+def avgAll(runObjList, title, showAARPP=True):
     baseObj = reduceAndAvg.avgRunObj(runObjList)
-    drawGraph.barChartFor1(baseObj, showAARPP=showAARPP)
+    drawGraph.barChartFor1(baseObj, title, showAARPP=showAARPP)
 
-def avgTransistion(runObjList, showAARPP=True):
-    avgRunObjList = getStanderdAvg('')
-    drawGraph.barChartRunsGrouped(avgRunObjList, lableLineNums = 4, showAARPP=showAARPP, logscale=False, putTransInLabel=True)
+def avgTransistion(runObjList, title, showAARPP=True):
+    avgRunObjList = getStanderdAvg(runObjList, '')
+    drawGraph.barChartRunsGrouped(avgRunObjList, title, lableLineNums = 4, showAARPP=showAARPP, logscale=False, putTransInLabel=True)
 
-def avgTransaction(runObjList, showAARPP=True):
-    avgRunObjList = getStanderdAvg('t')
-    drawGraph.barChartRunsGrouped(avgRunObjList, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
+def avgTransaction(runObjList, title, showAARPP=True):
+    avgRunObjList = getStanderdAvg(runObjList, 't')
+    drawGraph.barChartRunsGrouped(avgRunObjList, title, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
     
-def avgAtt(runObjList, showAARPP=True):
-    avgRunObjList = getStanderdAvg('a')
-    drawGraph.barChartRunsGrouped(avgRunObjList, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
+def avgAtt(runObjList, title, showAARPP=True):
+    avgRunObjList = getStanderdAvg(runObjList, 'a')
+    drawGraph.barChartRunsGrouped(avgRunObjList, title, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
 
-def avgFlexible(runObjList, showAARPP=True):
-    avgRunObjList = getStanderdAvg('f')
-    drawGraph.barChartRunsGrouped(avgRunObjList, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
+def avgFlexible(runObjList, title, showAARPP=True):
+    avgRunObjList = getStanderdAvg(runObjList, 'f')
+    drawGraph.barChartRunsGrouped(avgRunObjList, title, lableLineNums = 4, showAARPP=showAARPP, logscale=True, putTransInLabel=True)
 
-def avgQuery(runObjList, showAARPP=True):
-    avgRunObjList = getStanderdAvg('q')
-    drawGraph.barChartRunsGrouped(avgRunObjList, lableLineNums = 4, showAARPP=showAARPP, logscale=True, rotation='vertical')
+def avgQuery(runObjList, title, showAARPP=True):
+    avgRunObjList = getStanderdAvg(runObjList, 'q')
+    drawGraph.barChartRunsGrouped(avgRunObjList, title, lableLineNums = 4, showAARPP=showAARPP, logscale=False, rotation='vertical')
 
 def makeTransFairAvg(runObjList):
     groupingDict = reduceAndAvg.groupByDim(runObjList, '', True)
@@ -486,14 +486,14 @@ def autoSaveAll():
 
 #  hepatitis  lungCancer   hepatitisNoSup2
 #runObjList = classRunObj.parseFile("simpleData/hepatitisNoSup2.csv")
+runObjList = classRunObj.parseFile("../../oldflareResultsOld.csv")
+drawGraph.timeUnit = "seconds"
+avgTransistion(runObjList, "Average execution time Trans vs Non-Trans query Flare Dataset")
 
 #autoSaveAll()
 #reMakeLungCacer()
 #showF17()#make=True) #
 
-test = classRunObj.ExperamentalRun("")
-
-test.parseFileName("T1066A13F4QS431.txt")
 #makeF10()
 #showF6a(save=True)
 

@@ -29,7 +29,7 @@ def barChartFor1(runObj, title, filename='', logscale=False, showAARPP=True,  yT
     global conversionDict
     objects = ['QDAAR', 'IAMPoM']#, 'AARPP')
     if showAARPP:
-        objects.append('AARPP')
+        objects.append('IAMPoMwFPT')
     fig, ax = plt.subplots()
     y_pos = np.arange(len(objects))
     performance = [runObj.avgTtime/conversionDict[timeUnit],
@@ -59,7 +59,7 @@ def memBarChartFor1(runObj, title, filename='', logscale=False, showAARPP=True):
     global conversionDict
     objects = ['QDAAR', 'IAMPoM']#, 'AARPP')
     if showAARPP:
-        objects.append('AARPP')
+        objects.append('IAMPoMwFPT')
     y_pos = np.arange(len(objects))
     performance = [runObj.tavgM,
                    runObj.navgM]
@@ -110,7 +110,7 @@ def barChartRunsGrouped(runObjList, title, filename='', lableLineNums = 3, showA
     barPltList = []
     lableList = ['QDAAR', 'IAMPoM']
     if showAARPP:
-        lableList.append('AARPP')
+        lableList.append('IAMPoMwFPT')
     
     for i in range(len(groupList)):
         barPltList.append(plt.bar(index + (bar_width*i),
